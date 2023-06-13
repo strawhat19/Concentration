@@ -41,6 +41,7 @@
     --piratechs: #2b4261;
     --softBlack2: #636363;
     --piratechsDark: #10141d;
+    --concentration: #58717f;
     --main: rgb(0, 216, 255);
     --gameBlueInverse: #ff3d00;
     // --gameBlueSoft: var(--nextra);
@@ -129,7 +130,8 @@
     }
 
     article {
-        background: var(--piratechsBlue);
+        background: var(--concentration);
+        // background: var(--piratechsBlue);
     }
 
     .nextra-toc {

@@ -1,0 +1,58 @@
+form {
+    display: flex;
+    grid-gap: 1em;
+    flex-direction: column;
+    transition: 50ms var(--delayedTransition);
+    div {
+        display: flex;
+        grid-gap: 1em;
+        flex-direction: column;
+    }
+    label {
+        color: white;
+        font-weight: 600;
+        font-size: 1.15em;
+    }
+    input {
+        width: 100%;
+        font-size: 0.85em;
+        &::placeholder {
+            opacity: 0.35;
+        }
+    }
+    button {
+        min-height: 35px;
+        border-radius: var(--borderRadius);
+        background: var(--blackGlass) !important;
+    }
+    &.first {
+        font-size: 2em;
+        align-items: center;
+        justify-content: center;
+        height: 75vh !important;
+        label {
+            text-align: center;
+        }
+        input {
+            text-align: center;
+            border-bottom: 1px solid white;
+            background: transparent !important;
+            &::placeholder {
+                font-size: 0.65em;
+            }
+        }
+    }
+    .more {
+        animation: 0.24s slideUp var(--delayedTransition);
+    }
+}
+
+@keyframes slideUp {
+    0% {
+        height: 0px;
+        transform-origin: bottom;
+    }
+    100% {
+        height: 100%;
+    }
+}
