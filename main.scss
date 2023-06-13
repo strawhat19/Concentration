@@ -61,6 +61,27 @@
     --transition: 0.24s cubic-bezier(0.77, 0.2, 0.05, 1) !important;
 }
 
+html[class~="dark"] {
+     @supports (-webkit-backdrop-filter:blur(1px)) or ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+        background: rgba(0, 0, 0, 1) !important;
+        .nextra-nav-container-blur {
+            background: rgba(0, 0, 0, 1) !important;
+            background-color: rgba(0, 0, 0, 1) !important;
+        }
+     }
+     .nextra-nav-container-blur {
+         background: rgba(0, 0, 0, 1) !important;
+         --tw-shadow: 0 -12px 16px #000 !important;
+         border-bottom: solid 1px #000000 !important;
+     }
+
+     .dark\:nx-shadow-\[0_-1px_0_rgba\(255\,255\,255\,\.1\)_inset\] {
+         box-shadow: none !important;
+         --tw-shadow: none !important;
+         --tw-shadow-colored: none !important;
+     }
+ }
+
 .titleRow {
     padding: 10px;
     color: white;

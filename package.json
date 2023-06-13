@@ -21,6 +21,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.13.5",
+    "@mui/x-date-pickers": "^6.7.0",
     "ag-grid-react": "^29.1.0",
     "antd": "^5.2.1",
     "firebase": "^9.17.1",

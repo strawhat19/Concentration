@@ -2,6 +2,16 @@
     color: rgba(255, 255, 255, 0.25) !important;
 }
 
+.MuiStepConnector-line {
+    color: #bdbdbd !important;
+    padding-left: 1em;
+    font-size: 0.65em;
+}
+
+.MuiOutlinedInput-notchedOutline {
+    border-color: transparent !important;
+}
+
 .MuiInput-root {
     &::after {
         // border-radius: var(--borderRadius) !important;
@@ -39,7 +49,7 @@
 
 .MuiStepper-root {
     .Mui-completed, .Mui-active {
-        :not(.MuiStepLabel-label) {
+        :not(.MuiStepLabel-label):not(.MuiStepConnector-line) {
             color: var(--gameBlueSoft) !important;
         }
         svg {
