@@ -1,15 +1,27 @@
 {
-  "index": "Introduction",
-  "another": "Another Page",
-  "advanced": "Advanced (A Folder)",
+  "index": {
+    "title": "Home",
+    "theme": {
+      "pagination": false,
+      "layout": "full"
+    }
+  },
   "about": {
     "title": "About",
     "type": "page"
   },
-  "contact": {
-    "title": "Contact ↗",
-    "type": "page",
-    "href": "https://twitter.com/shuding_",
-    "newWindow": true
+  "company": {
+    "title": "Company",
+    "type": "menu",
+    "items": {
+      "about": {
+        "title": "Piratechs",
+        "href": "https://piratechs.com/"
+      },
+      "contact": {
+        "title": "Text Me",
+        "href": "sms:6787903980"
+      }
+    }
   }
 }
