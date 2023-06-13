@@ -1,13 +1,58 @@
+.Mui-disabled {
+    color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.MuiStepLabel-label {
+    font-size: 0.65em;
+    color: white !important;
+    font-family: 'Montserrat';
+}
+
+.MuiPaper-root {
+    background: transparent;
+}
+
+.MuiTypography-root {
+    color: white;
+    font-family: 'Montserrat' !important;
+}
+
+.MuiStepper-root {
+    .Mui-completed, .Mui-active {
+        color: var(--gameBlueSoft);
+        svg {
+            border-radius: 100%;
+            background: radial-gradient(white 0%, transparent 100%);
+        }
+    }
+    .MuiButton-containedPrimary {
+        background: var(--gameBlueSoft) !important;
+    }
+    .MuiButton-textPrimary {
+        color: var(--gameBlueSoft);
+    }
+    .MuiTextField-root {
+        label {
+            color: white;
+            &:not(.Mui-focused) {
+                color: rgba(255,255,255,0.25);
+            }
+            padding-left: 1em;
+        }
+    }
+}
+
 form {
     display: flex;
     grid-gap: 1em;
     flex-direction: column;
-    transition: 50ms var(--delayedTransition);
-    div {
-        display: flex;
-        grid-gap: 1em;
-        flex-direction: column;
-    }
+    font-family: 'Montserrat';
+    // transition: 10ms var(--delayedTransition);
+    // div {
+    //     display: flex;
+    //     grid-gap: 1em;
+    //     flex-direction: column;
+    // }
     label {
         color: white;
         font-weight: 600;
@@ -23,6 +68,7 @@ form {
     button {
         min-height: 35px;
         border-radius: var(--borderRadius);
+        font-family: 'Montserrat' !important;
         background: var(--blackGlass) !important;
     }
     &.first {
@@ -42,9 +88,9 @@ form {
             }
         }
     }
-    .more {
-        animation: 0.24s slideUp var(--delayedTransition);
-    }
+    // .more {
+    //     animation: 0.24s slideUp var(--delayedTransition);
+    // }
 }
 
 @keyframes slideUp {

@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { StateContext, dev } from "../../pages/_app";
+import VerticalLinearStepper from "../stepper/stepper";
 
 export default function Concentration(props) {
 
@@ -22,13 +23,14 @@ export default function Concentration(props) {
     return <>
         <div id={`ConcentrationGame`} title={props.title} style={{width: `100%`, margin: `20px auto`}}>
             <form className={`ConcentrationGameForm ${gameFormStep == 1 ? `first` : `next`}`} id={`ConcentrationGameForm`} onSubmit={(ConcentrationGameFormSubmitEvent) => ConcentrationGameFormSubmit(ConcentrationGameFormSubmitEvent)}>
-                <label htmlFor={`topic`}>Topic</label>
+                <VerticalLinearStepper />
+                {/* <label htmlFor={`topic`}>Topic</label>
                 <input type={`text`} name={`topic`} id={`topic`} placeholder={`Topic`} required />
                 {gameFormStep != 1 && <div className={`more`}>
                     <label htmlFor={`timeLimit`}>Time Limit</label>
                     <input type={`text`} name={`timeLimit`} id={`timeLimit`} placeholder={`Time Limit`} required />
                     <button className={`ConcentrationGameFormSubmit`} type={`submit`}>{buttonText}</button>
-                </div>}
+                </div>} */}
             </form>
         </div>
     </>
