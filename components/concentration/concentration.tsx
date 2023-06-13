@@ -11,13 +11,13 @@ export default function Concentration(props) {
 
         dev() && console.log(`ConcentrationGameFormSubmit Target`, ConcentrationGameFormSubmitEvent?.target);
 
-        if (gameFormStep == 1) {
-            setButtonText(`Start Game`);
-            setGameFormStep(gameFormStep + 1);
-        } else {
-            setButtonText(`Next`);
-            setGameFormStep(1);
-        }
+        // if (gameFormStep == 1) {
+        //     setButtonText(`Start Game`);
+        //     setGameFormStep(gameFormStep + 1);
+        // } else {
+        //     setButtonText(`Next`);
+        //     setGameFormStep(1);
+        // }
     }
 
     return <>
