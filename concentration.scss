@@ -3,13 +3,13 @@
 }
 
 .MuiStepLabel-label {
-    font-size: 0.65em;
     color: white !important;
+    font-size: 0.65em !important;
     font-family: 'Montserrat' !important;
 }
 
 .MuiPaper-root {
-    background: transparent;
+    background: transparent !important;
 }
 
 .MuiTypography-root {
@@ -19,25 +19,25 @@
 
 .MuiStepper-root {
     .Mui-completed, .Mui-active {
-        color: var(--gameBlueSoft);
+        color: var(--gameBlueSoft) !important;
         svg {
-            border-radius: 100%;
-            background: radial-gradient(white 0%, transparent 100%);
+            border-radius: 100% !important;
+            background: radial-gradient(white 0%, transparent 100%) !important;
         }
     }
     .MuiButton-containedPrimary {
         background: var(--gameBlueSoft) !important;
     }
     .MuiButton-textPrimary {
-        color: var(--gameBlueSoft);
+        color: var(--gameBlueSoft) !important;
     }
     .MuiTextField-root {
         label {
-            color: white;
+            color: white !important;
+            padding-left: 1em !important;
             &:not(.Mui-focused) {
-                color: rgba(255,255,255,0.25);
+                color: rgba(255,255,255,0.25) !important;
             }
-            padding-left: 1em;
         }
     }
 }
