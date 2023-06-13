@@ -2,13 +2,13 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Step from '@mui/material/Step';
 import Paper from '@mui/material/Paper';
+import { TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import Stepper from '@mui/material/Stepper';
 import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
 import StepContent from '@mui/material/StepContent';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { TextField } from '@mui/material';
 
 const muiTheme = createTheme({
     palette: {
@@ -31,7 +31,7 @@ const steps = [
   },
   {
     label: `Time Limit`,
-    description: `Time Limit for Players to Submit an Entry.`,
+    description: `Time Limit for Players.`,
   },
 ];
 
@@ -94,9 +94,9 @@ export default function VerticalLinearStepper() {
         </Stepper>
         {activeStep === steps.length && (
             <Paper square elevation={0} sx={{ p: 3 }}>
-            <Typography>All steps completed - you&apos;re finished</Typography>
-            <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-                Reset
+            <Typography>Game Set</Typography>
+            <Button className={`MuiButton-containedPrimary containedPrimary`} onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
+                Start Game
             </Button>
             </Paper>
         )}

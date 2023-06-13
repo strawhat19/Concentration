@@ -801,13 +801,13 @@ form {
         font-size: 12px;
         max-height: 35px;
         font-weight: 400;
-        border-radius: var(--borderRadius);
         padding: 10px 25px;
         outline: none !important;
         font-family: "Montserrat";
-        background: var(--blackGlass) !important;
-        transition: var(--transition);
         color: white !important;
+        transition: var(--transition);
+        // border-radius: var(--borderRadius);
+        background: var(--blackGlass) !important;
         // box-shadow: 0 0 10px var(--gameBlueSoft),0 0 20px var(--gameBlueSoft);
 
         label {
