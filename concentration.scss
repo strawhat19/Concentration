@@ -5,7 +5,7 @@
 .MuiStepConnector-line {
     color: #bdbdbd !important;
     padding-left: 1em;
-    font-size: 0.65em;
+    font-size: 0.45em;
 }
 
 .MuiOutlinedInput-notchedOutline {
@@ -26,6 +26,14 @@
         }
     }
 }
+
+::selection {
+    background: var(--gameBlueSoft);
+}
+
+// .customConnector {
+//     border-left: none;
+// }
 
 .MuiStepLabel-label {
     color: white !important;
@@ -72,58 +80,48 @@
 }
 
 form {
-    display: flex;
-    grid-gap: 1em;
-    flex-direction: column;
-    font-family: 'Montserrat';
-    // transition: 10ms var(--delayedTransition);
-    // div {
-    //     display: flex;
-    //     grid-gap: 1em;
-    //     flex-direction: column;
-    // }
-    label {
-        color: white;
-        font-weight: 600;
-        font-size: 1.15em;
-    }
-    input {
-        width: 100%;
-        font-size: 0.85em;
-        &:focus-visible {
-            outline: none;
-            box-shadow: none;
-        }
-        &::placeholder {
-            opacity: 0.35;
-        }
-    }
-    button {
-        min-height: 35px;
-        border-radius: var(--borderRadius);
-        font-family: 'Montserrat' !important;
-        background: var(--blackGlass) !important;
-    }
-    &.first {
+    &.ConcentrationGameForm {
+        display: flex;
+        grid-gap: 1em;
         font-size: 2em;
         align-items: center;
+        flex-direction: column;
+        transform: scale(1.25);
         justify-content: center;
         height: 75vh !important;
+        font-family: 'Montserrat';
         label {
+            color: white;
+            font-weight: 600;
+            font-size: 0.45em;
             text-align: center;
+            font-family: 'Montserrat' !important;
         }
         input {
+            width: 100%;
+            font-size: 0.85em;
             text-align: center;
-            border-bottom: 1px solid white;
+            font-family: 'Montserrat';
+            margin: 5px 0 0 0 !important;
             background: transparent !important;
+            border-bottom: 1px solid white !important;
+            &:focus-visible {
+                outline: none;
+                box-shadow: none;
+            }
             &::placeholder {
-                font-size: 0.65em;
+                opacity: 0.35 !important;
+                font-family: 'Montserrat';
+                font-size: 0.65em !important;
             }
         }
+        button {
+            min-height: 35px;
+            border-radius: var(--borderRadius);
+            font-family: 'Montserrat' !important;
+            background: var(--blackGlass) !important;
+        }
     }
-    // .more {
-    //     animation: 0.24s slideUp var(--delayedTransition);
-    // }
 }
 
 @keyframes slideUp {
