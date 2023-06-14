@@ -14,6 +14,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ![SASS](https://img.shields.io/badge/SASS-hotpink.svg?style=for-the-badge&logo=SASS&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white)
 
+![Screenshot of Application Dark Mode](./assets/screenshots/form.JPG)
+
 ## About
 I used Next js to make this site which is an alernate version of the game Concentration that me and my siblings play on road trips.
 

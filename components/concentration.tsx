@@ -176,7 +176,7 @@ export default function Concentration(props) {
                                                 <TimeField style={{ marginTop: 15 }} format="HH:mm:ss" className={`formField timeLimit`} name={`timeLimit`} label="Time Limit" required />
                                             </LocalizationProvider>
                                         </>}
-                                        {/* {activeStep != 0 && <Box sx={{ mb: 2 }}>
+                                        {activeStep == steps?.length && <Box sx={{ mb: 2 }}>
                                             <div>
                                                 <Button
                                                     variant="contained"
@@ -193,7 +193,7 @@ export default function Concentration(props) {
                                                     Back
                                                 </Button>
                                             </div>
-                                        </Box>} */}
+                                        </Box>}
                                     </StepContent>
                                 </Step>
                             ))}
