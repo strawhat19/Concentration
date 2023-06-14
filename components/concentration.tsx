@@ -1,12 +1,14 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { dev } from '../pages/_app';
+import dayjs, { Dayjs } from 'dayjs';
 import Step from '@mui/material/Step';
 import Paper from '@mui/material/Paper';
 import { TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import Stepper from '@mui/material/Stepper';
 import StepLabel from '@mui/material/StepLabel';
+import { TimePicker } from '@mui/x-date-pickers';
 import Typography from '@mui/material/Typography';
 import StepContent from '@mui/material/StepContent';
 import { useState, useEffect, useRef } from 'react';
@@ -45,8 +47,9 @@ export default function Concentration(props) {
 
     const loadedRef = useRef(false);
     const [loaded, setLoaded] = useState(false);
-    const [formFields, setFormFields] = useState({});
     const [activeStep, setActiveStep] = useState(0);
+    const [formFields, setFormFields] = useState({});
+    let [fieldError, setFieldError] = useState(false);
 
     const handleNext = (fields?) => {
         setActiveStep((prevActiveStep) => {
@@ -74,11 +77,13 @@ export default function Concentration(props) {
     };
 
     const handleBack = () => {
+        setFieldError(false);
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
     const handleReset = () => {
         setActiveStep(0);
+        setFormFields({});
         let stepConnectors = document.querySelectorAll(`.MuiStepConnector-root`);
         stepConnectors.forEach((step, index) => {
             if (index == stepConnectors?.length - 1) {
@@ -93,6 +98,8 @@ export default function Concentration(props) {
     const ConcentrationGameFormSubmit = (ConcentrationGameFormSubmitEvent) => {
         ConcentrationGameFormSubmitEvent.preventDefault();
 
+        // dev() && console.log(ConcentrationGameFormSubmitEvent);
+
         // Set Up Object Where We Can Store Form Values
         let concentrationForm = ConcentrationGameFormSubmitEvent?.target;
         let formFieldContainers = concentrationForm.querySelectorAll(`.formField`);
@@ -104,7 +111,14 @@ export default function Concentration(props) {
                 return { [field?.name]: field?.value };
             } else {
                 field = fieldContainer.querySelector(`.MuiInputBase-formControl`).querySelector(`input`);
-                return { [field?.name]: field?.value };
+                if (field?.name) {
+                    return { [field?.name]: field?.value };
+                } else {
+                    if (fieldContainer.classList.contains(`timeLimit`)) {
+                        field = fieldContainer.querySelector(`.MuiInputBase-formControl`).querySelector(`input`);
+                        return { timeLimit: field?.value };
+                    }
+                }
             }
         })));
 
@@ -116,9 +130,19 @@ export default function Concentration(props) {
             return;
         } else {
             dev() && console.log(`Game`, formFields);
-            handleNext(formFields);
+            if (((formFields as any)?.timeLimit && (formFields as any)?.timeLimit != `mm` && (formFields as any)?.timeLimit >= 1 && (formFields as any)?.timeLimit <= 15) || (!(formFields as any)?.timeLimit)) {
+                handleNext(formFields);
+                setFieldError(false);
+            } else {
+                setFieldError(true);
+                return false;
+            }
         }
     }
+
+    const isStepFailed = (step: number) => {
+        return step === 1;
+      };
 
     useEffect(() => {
 
@@ -144,7 +168,7 @@ export default function Concentration(props) {
         loadedRef.current = true;
         setLoaded(true);
 
-      }, [activeStep]);
+      }, [activeStep, fieldError]);
 
     return <>
         <div id={`ConcentrationGame`} title={props.title} style={{width: `100%`, margin: `20px auto`}}>
@@ -152,51 +176,68 @@ export default function Concentration(props) {
                 <ThemeProvider theme={muiTheme}>
                     <Box sx={{ maxWidth: 400 }}>
                         <Stepper activeStep={activeStep} orientation="vertical">
-                            {steps.map((step, index) => (
-                                <Step key={step.label}>
-                                    <StepLabel
-                                    //   optional={
-                                    //     index === 2 ? (
-                                    //       <Typography variant="caption">Last step</Typography>
-                                    //     ) : null
-                                    //   }
-                                    >
-                                        {step.label}
-                                    </StepLabel>
-                                    <StepContent>
-                                        {step.description && step.description != `` && <Typography>{step.description}</Typography>}
-                                        {step.label == `Topic` && <>
-                                            <TextField fullWidth className={`formField topic`} name={`topic`} id="standard-basic" label="Topic" variant="standard" required />
-                                        </>}
-                                        {step.label == `Rules` && <>
-                                            <TextField fullWidth className={`formField rules`} name={`rules`} id="standard-basic" label="Rules" variant="standard" required />
-                                        </>}
-                                        {step.label == `Time Limit` && <>
-                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                <TimeField style={{ marginTop: 15 }} format="HH:mm:ss" className={`formField timeLimit`} name={`timeLimit`} label="Time Limit" required />
-                                            </LocalizationProvider>
-                                        </>}
-                                        {activeStep == steps?.length && <Box sx={{ mb: 2 }}>
-                                            <div>
-                                                <Button
-                                                    variant="contained"
-                                                    onClick={handleNext}
-                                                    sx={{ mt: 1, mr: 1 }}
-                                                >
-                                                    {index === steps.length - 1 ? 'Finish' : 'Continue'}
-                                                </Button>
-                                                <Button
-                                                    disabled={index === 0}
-                                                    onClick={handleBack}
-                                                    sx={{ mt: 1, mr: 1 }}
-                                                >
-                                                    Back
-                                                </Button>
-                                            </div>
-                                        </Box>}
-                                    </StepContent>
-                                </Step>
-                            ))}
+                            {steps.map((step, index) => {
+                                const labelProps: {
+                                    optional?: React.ReactNode;
+                                    error?: boolean;
+                                } = {};
+
+                                if (isStepFailed(index)) {
+                                    labelProps.optional = (
+                                      <Typography variant="caption" color="error">
+                                        Alert message
+                                      </Typography>
+                                    );
+                                    labelProps.error = true;
+                                }
+
+                                return (
+                                    <Step key={step.label}>
+                                        <StepLabel
+                                        //   optional={
+                                        //     index === 2 ? (
+                                        //       <Typography variant="caption">Last step</Typography>
+                                        //     ) : null
+                                        //   }
+                                        >
+                                            {step.label}
+                                        </StepLabel>
+                                        <StepContent>
+                                            {step.description && step.description != `` && <Typography>{step.description}</Typography>}
+                                            {step.label == `Topic` && <>
+                                                <TextField fullWidth className={`formField topic`} name={`topic`} id="standard-basic" label="Topic" variant="standard" required />
+                                            </>}
+                                            {step.label == `Rules` && <>
+                                                <TextField fullWidth className={`formField rules`} name={`rules`} id="standard-basic" label="Rules" variant="standard" required />
+                                            </>}
+                                            {step.label == `Time Limit` && <>
+                                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                    {/* <TimePicker data-name={`timeLimit`} views={[`minutes`, `seconds`]} format="mm:ss" defaultValue={`05:00`} className={`formField timeLimit`} label="Time Limit" /> */}
+                                                    <TimeField style={{ marginTop: 15 }} format="mm" className={`formField timeLimit ${fieldError ? `error` : ``}`} name={`timeLimit`} label="Time Limit" defaultValue={dayjs().minute(5)} minTime={dayjs().minute(1)} maxTime={dayjs().minute(15)} shouldDisableTime={(value, view) => view === `minutes` && value.minute() > 15} required />
+                                                </LocalizationProvider>
+                                            </>}
+                                            {activeStep !== 0 && <Box sx={{ mb: 2 }}>
+                                                <div>
+                                                    <Button
+                                                        type={`submit`}
+                                                        variant="contained"
+                                                        sx={{ mt: 1, mr: 1 }}
+                                                    >
+                                                        {index === steps.length - 1 ? 'Finish' : 'Continue'}
+                                                    </Button>
+                                                    <Button
+                                                        disabled={index === 0}
+                                                        onClick={handleBack}
+                                                        sx={{ mt: 1, mr: 1 }}
+                                                    >
+                                                        Back
+                                                    </Button>
+                                                </div>
+                                            </Box>}
+                                        </StepContent>
+                                    </Step>
+                                )
+                            })}
                         </Stepper>
                         {activeStep === steps.length && (
                             <Paper square elevation={0} sx={{ p: 3 }}>

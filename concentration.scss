@@ -47,6 +47,7 @@
 
 .MuiTypography-root {
     color: white;
+    margin-bottom: 10px;
     font-family: 'Montserrat' !important;
 }
 
@@ -73,7 +74,7 @@
             color: white !important;
             padding-left: 1em !important;
             &:not(.Mui-focused) {
-                color: rgba(255,255,255,0.25) !important;
+                color: rgba(255,255,255,0.65) !important;
             }
         }
     }
@@ -91,8 +92,8 @@ form {
         height: 75vh !important;
         font-family: 'Montserrat';
         label {
-            color: white;
-            font-weight: 600;
+            opacity: 1;
+            font-weight: 500;
             font-size: 0.45em;
             text-align: center;
             font-family: 'Montserrat' !important;
@@ -101,6 +102,7 @@ form {
             width: 100%;
             font-size: 0.85em;
             text-align: center;
+            filter: brightness(1);
             font-family: 'Montserrat';
             margin: 5px 0 0 0 !important;
             background: transparent !important;
@@ -122,6 +124,47 @@ form {
             background: var(--blackGlass) !important;
         }
     }
+}
+
+.nextra-sidebar-container {
+    font-weight: 500;
+   li {
+    &:not(.active) {
+        a, button {
+            display: flex;
+            grid-gap: 0.3em;
+            position: relative;
+            align-items: center;
+            transition: var(--transition);
+            color: rgba(255,255,255,0.75) !important;
+
+            &::before {
+                right: 0;
+                z-index: 0;
+                width: 100%;
+                bottom: 1px;
+                height: 1px;
+                display: block;
+                position: absolute;
+                transform: scale(0, 1);
+                content: "" !important;
+                transform-origin: 0% 100%;
+                transition: var(--transition);
+                background: var(--gameBlueSoft);
+            }
+
+            &:hover {
+                transition: var(--transition);
+                color: rgba(255,255,255,1) !important;
+
+                &::before {
+                    transform: scale(1, 1);
+                    transition: 500ms ease-in-out;
+                }
+            }
+        }
+    }
+   }
 }
 
 @keyframes slideUp {
