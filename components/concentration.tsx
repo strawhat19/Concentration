@@ -1,14 +1,13 @@
+import dayjs from 'dayjs';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { dev } from '../pages/_app';
-import dayjs, { Dayjs } from 'dayjs';
 import Step from '@mui/material/Step';
 import Paper from '@mui/material/Paper';
 import { TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import Stepper from '@mui/material/Stepper';
 import StepLabel from '@mui/material/StepLabel';
-import { TimePicker } from '@mui/x-date-pickers';
 import Typography from '@mui/material/Typography';
 import StepContent from '@mui/material/StepContent';
 import { useState, useEffect, useRef } from 'react';
@@ -34,8 +33,8 @@ const steps = [
         description: `Select a Topic for the Game`,
     },
     {
-        label: `Rules`,
-        description: `Add Rules for the Game.`,
+        label: `Players`,
+        description: `Add Players for the Game.`,
     },
     {
         label: `Time Limit`,
@@ -50,36 +49,20 @@ export default function Concentration(props) {
     const [activeStep, setActiveStep] = useState(0);
     const [formFields, setFormFields] = useState({});
     let [fieldError, setFieldError] = useState(false);
-
-    const handleNext = (fields?) => {
-        setActiveStep((prevActiveStep) => {
-            return prevActiveStep + 1;
-        });
-
-        if (fields) {
-            let stepConnectors = document.querySelectorAll(`.MuiStepConnector-root`);
-            if (activeStep < stepConnectors.length) {
-                let thisConnector = stepConnectors[activeStep];
-                let connectorLineText = thisConnector?.querySelector(`span`);
-                connectorLineText.innerHTML = Object.values(fields)[activeStep]?.toString();
-            } else {
-            setTimeout(() => {
-                let lastCompleted = document.querySelectorAll(`.Mui-completed`)[document.querySelectorAll(`.Mui-completed`)?.length - 1]?.parentElement?.parentElement;
-                lastCompleted.insertAdjacentHTML(`afterend`, `<div class="MuiStepConnector-root MuiStepConnector-vertical Mui-completed css-1pe7n21-MuiStepConnector-root"><span class="customConnector MuiStepConnector-line MuiStepConnector-lineVertical css-8t49rw-MuiStepConnector-line">${Object.values(fields)[activeStep]?.toString()}</span></div>`);
-            }, 35);
-            }
-        }
-
-        setTimeout(() => {
-            let nextInput: any = document.querySelectorAll(`.formField`)[document.querySelectorAll(`.formField`)?.length - 1].querySelector(`input`);
-            if (nextInput) nextInput?.focus();
-        }, 35);
+    let [players, setPlayers] = useState([{id: 1, name: `Player 1`, score: 0}, {id: 2, name: `Player 2`, score: 0}]);
+    
+    const isStepFailed = (step: number) => {
+        return step === 1;
     };
 
     const handleBack = () => {
         setFieldError(false);
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
+
+    const addPlayer = (e) => {
+        console.log(`Add Player`, e);
+    }
 
     const handleReset = () => {
         setActiveStep(0);
@@ -95,6 +78,32 @@ export default function Concentration(props) {
         document.querySelector(`.formField`)?.querySelector(`input`)?.focus();
     };
 
+    const handleNext = (fields?) => {
+        setActiveStep((prevActiveStep) => {
+            return prevActiveStep + 1;
+        });
+
+        if (fields) {
+            let stepConnectors = document.querySelectorAll(`.MuiStepConnector-root`);
+            if (activeStep < stepConnectors.length) {
+                let thisConnector = stepConnectors[activeStep];
+                let connectorLineText = thisConnector?.querySelector(`span`);
+                connectorLineText.innerHTML = Object.values(fields)[activeStep]?.toString();
+            } else {
+                // Here Edit
+                setTimeout(() => {
+                    let lastCompleted = document.querySelectorAll(`.Mui-completed`)[document.querySelectorAll(`.Mui-completed`)?.length - 1]?.parentElement?.parentElement;
+                    lastCompleted.insertAdjacentHTML(`afterend`, `<div class="MuiStepConnector-root MuiStepConnector-vertical Mui-completed css-1pe7n21-MuiStepConnector-root"><span class="customConnector MuiStepConnector-line MuiStepConnector-lineVertical css-8t49rw-MuiStepConnector-line">${activeStep === 1 ? players?.length + ` Players` : Object.values(fields)[activeStep]?.toString()}</span></div>`);
+                }, 35);
+            }
+        }
+
+        setTimeout(() => {
+            let nextInput: any = document.querySelectorAll(`.formField`)[document.querySelectorAll(`.formField`)?.length - 1].querySelector(`input`);
+            if (nextInput) nextInput?.focus();
+        }, 35);
+    };
+
     const ConcentrationGameFormSubmit = (ConcentrationGameFormSubmitEvent) => {
         ConcentrationGameFormSubmitEvent.preventDefault();
 
@@ -107,20 +116,27 @@ export default function Concentration(props) {
         // Store Form Values
         Object.assign(formFields, ...([...formFieldContainers].map((fieldContainer: any, fieldContainerIndex) => {
             let field = fieldContainer.querySelector(`.MuiInput-input`);
-            if (field != null && field != undefined) {
-                return { [field?.name]: field?.value };
-            } else {
-                field = fieldContainer.querySelector(`.MuiInputBase-formControl`).querySelector(`input`);
-                if (field?.name) {
+            if (field?.name != `players`) {
+                if (field != null && field != undefined) {
                     return { [field?.name]: field?.value };
                 } else {
-                    if (fieldContainer.classList.contains(`timeLimit`)) {
-                        field = fieldContainer.querySelector(`.MuiInputBase-formControl`).querySelector(`input`);
-                        return { timeLimit: field?.value };
+                    field = fieldContainer.querySelector(`.MuiInputBase-formControl`).querySelector(`input`);
+                    if (field?.name) {
+                        return { [field?.name]: field?.value };
+                    } else {
+                        if (fieldContainer.classList.contains(`timeLimit`)) {
+                            field = fieldContainer.querySelector(`.MuiInputBase-formControl`).querySelector(`input`);
+                            return { timeLimit: field?.value };
+                        }
                     }
                 }
+            } else {
+                console.log(`Player Field`);
+                return { [field?.name + `-Field`]: field?.value };
             }
         })));
+
+        formFields[`players`] = players;
 
         let values = Object.values(formFields);
         let emptyVals = values.some(val => val == ``);
@@ -139,10 +155,6 @@ export default function Concentration(props) {
             }
         }
     }
-
-    const isStepFailed = (step: number) => {
-        return step === 1;
-      };
 
     useEffect(() => {
 
@@ -207,8 +219,13 @@ export default function Concentration(props) {
                                             {step.label == `Topic` && <>
                                                 <TextField fullWidth className={`formField topic`} name={`topic`} id="standard-basic" label="Topic" variant="standard" required />
                                             </>}
-                                            {step.label == `Rules` && <>
-                                                <TextField fullWidth className={`formField rules`} name={`rules`} id="standard-basic" label="Rules" variant="standard" required />
+                                            {step.label == `Players` && <>
+                                                {players.map((player, playerIndex) => {
+                                                    return (
+                                                        <Typography fontSize={13} key={playerIndex}>{playerIndex + 1}. {player?.name}</Typography>
+                                                    )
+                                                })}
+                                                <TextField style={{marginBottom: 15}} fullWidth className={`formField players`} name={`players`} id="standard-basic" label="+ Add Player" variant="standard" />
                                             </>}
                                             {step.label == `Time Limit` && <>
                                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -218,13 +235,19 @@ export default function Concentration(props) {
                                             </>}
                                             {activeStep !== 0 && <Box sx={{ mb: 2 }}>
                                                 <div>
-                                                    <Button
+                                                    {activeStep !== 1 ? <Button
                                                         type={`submit`}
                                                         variant="contained"
                                                         sx={{ mt: 1, mr: 1 }}
                                                     >
                                                         {index === steps.length - 1 ? 'Finish' : 'Continue'}
-                                                    </Button>
+                                                    </Button> : <Button
+                                                        onClick={(e) => addPlayer(e)}
+                                                        variant="contained"
+                                                        sx={{ mt: 1, mr: 1 }}
+                                                    >
+                                                        + Add Player
+                                                    </Button>}
                                                     <Button
                                                         disabled={index === 0}
                                                         onClick={handleBack}

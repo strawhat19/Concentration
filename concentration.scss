@@ -1,3 +1,8 @@
+.MuiBox-root {
+    width: 100%;
+    max-width: 100% !important;
+}
+
 .Mui-disabled {
     color: rgba(255, 255, 255, 0.25) !important;
 }
@@ -87,7 +92,6 @@ form {
         font-size: 2em;
         align-items: center;
         flex-direction: column;
-        transform: scale(1.25);
         justify-content: center;
         height: 75vh !important;
         font-family: 'Montserrat';
@@ -102,7 +106,7 @@ form {
             width: 100%;
             font-size: 0.85em;
             text-align: center;
-            filter: brightness(1);
+            // filter: brightness(1);
             font-family: 'Montserrat';
             margin: 5px 0 0 0 !important;
             background: transparent !important;
