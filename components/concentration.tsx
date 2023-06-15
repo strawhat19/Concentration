@@ -16,6 +16,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
+const initialPlayers = [{id: 1, name: `Player 1`, score: 0}, {id: 2, name: `Player 2`, score: 0}];
+
 const muiTheme = createTheme({
     palette: {
         // primary: {
@@ -49,7 +51,7 @@ export default function Concentration(props) {
     const [activeStep, setActiveStep] = useState(0);
     const [formFields, setFormFields] = useState({});
     let [fieldError, setFieldError] = useState(false);
-    let [players, setPlayers] = useState([{id: 1, name: `Player 1`, score: 0}, {id: 2, name: `Player 2`, score: 0}]);
+    let [players, setPlayers] = useState(initialPlayers);
     
     const isStepFailed = (step: number) => {
         return step === 1;
@@ -60,13 +62,10 @@ export default function Concentration(props) {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    const addPlayer = (e) => {
-        console.log(`Add Player`, e);
-    }
-
     const handleReset = () => {
         setActiveStep(0);
         setFormFields({});
+        setPlayers(initialPlayers);
         let stepConnectors = document.querySelectorAll(`.MuiStepConnector-root`);
         stepConnectors.forEach((step, index) => {
             if (index == stepConnectors?.length - 1) {
@@ -88,12 +87,13 @@ export default function Concentration(props) {
             if (activeStep < stepConnectors.length) {
                 let thisConnector = stepConnectors[activeStep];
                 let connectorLineText = thisConnector?.querySelector(`span`);
-                connectorLineText.innerHTML = Object.values(fields)[activeStep]?.toString();
+                connectorLineText.style.marginTop = `15px`;
+                connectorLineText.style.paddingLeft = `15px`;
+                connectorLineText.innerHTML = activeStep === 1 ? ((players?.length) + ` Players`) : Object.values(fields)[activeStep]?.toString();
             } else {
-                // Here Edit
                 setTimeout(() => {
                     let lastCompleted = document.querySelectorAll(`.Mui-completed`)[document.querySelectorAll(`.Mui-completed`)?.length - 1]?.parentElement?.parentElement;
-                    lastCompleted.insertAdjacentHTML(`afterend`, `<div class="MuiStepConnector-root MuiStepConnector-vertical Mui-completed css-1pe7n21-MuiStepConnector-root"><span class="customConnector MuiStepConnector-line MuiStepConnector-lineVertical css-8t49rw-MuiStepConnector-line">${activeStep === 1 ? players?.length + ` Players` : Object.values(fields)[activeStep]?.toString()}</span></div>`);
+                    lastCompleted.insertAdjacentHTML(`afterend`, `<div class="MuiStepConnector-root MuiStepConnector-vertical Mui-completed css-1pe7n21-MuiStepConnector-root"><span class="customConnector MuiStepConnector-line MuiStepConnector-lineVertical css-8t49rw-MuiStepConnector-line">${Object.values(fields)[activeStep]?.toString()} minutes per player</span></div>`);
                 }, 35);
             }
         }
@@ -131,35 +131,36 @@ export default function Concentration(props) {
                     }
                 }
             } else {
-                console.log(`Player Field`);
-                return { [field?.name + `-Field`]: field?.value };
+                let newPlayers = [];
+                setPlayers(prevPlayers => {
+                    if (field?.value != ``) {
+                        newPlayers = [...prevPlayers, {id: prevPlayers.length + 1, name: field?.value, score: 0}];
+                        field.value = ``;
+                    } else {
+                        newPlayers = prevPlayers;
+                        handleNext(formFields);
+                    }
+                    return newPlayers;
+                });
+                return { players: newPlayers};
             }
         })));
 
-        formFields[`players`] = players;
-
-        let values = Object.values(formFields);
-        let emptyVals = values.some(val => val == ``);
-
-        if (emptyVals) {
-            dev() && console.log(`Empty`);
-            return;
+        dev() && console.log(`Game`, formFields);
+        if (((formFields as any)?.timeLimit && (formFields as any)?.timeLimit != `mm` && (formFields as any)?.timeLimit >= 1 && (formFields as any)?.timeLimit <= 15) || (!(formFields as any)?.timeLimit)) {
+            console.log(ConcentrationGameFormSubmitEvent);
+            if (activeStep != 1) handleNext(formFields);
+            setFieldError(false);
         } else {
-            dev() && console.log(`Game`, formFields);
-            if (((formFields as any)?.timeLimit && (formFields as any)?.timeLimit != `mm` && (formFields as any)?.timeLimit >= 1 && (formFields as any)?.timeLimit <= 15) || (!(formFields as any)?.timeLimit)) {
-                handleNext(formFields);
-                setFieldError(false);
-            } else {
-                setFieldError(true);
-                return false;
-            }
+            setFieldError(true);
+            return false;
         }
     }
 
     useEffect(() => {
 
         if (activeStep == 0) {
-            document.querySelector(`.formField`)?.querySelector(`input`)?.focus()
+            document.querySelector(`.formField`)?.querySelector(`input`)?.focus();
         } else if (activeStep === steps.length) {
 
             const handleEnterKey = (event) => {
@@ -217,7 +218,7 @@ export default function Concentration(props) {
                                         <StepContent>
                                             {step.description && step.description != `` && <Typography>{step.description}</Typography>}
                                             {step.label == `Topic` && <>
-                                                <TextField fullWidth className={`formField topic`} name={`topic`} id="standard-basic" label="Topic" variant="standard" required />
+                                                <TextField fullWidth className={`formField topic`} name={`topic`} id="standard-basic" label="Topic" variant="standard" placeholder={`Famous People that Passed Away whose First or Last Names that start with Letter`} required />
                                             </>}
                                             {step.label == `Players` && <>
                                                 {players.map((player, playerIndex) => {
@@ -233,21 +234,15 @@ export default function Concentration(props) {
                                                     <TimeField style={{ marginTop: 15 }} format="mm" className={`formField timeLimit ${fieldError ? `error` : ``}`} name={`timeLimit`} label="Time Limit" defaultValue={dayjs().minute(5)} minTime={dayjs().minute(1)} maxTime={dayjs().minute(15)} shouldDisableTime={(value, view) => view === `minutes` && value.minute() > 15} required />
                                                 </LocalizationProvider>
                                             </>}
-                                            {activeStep !== 0 && <Box sx={{ mb: 2 }}>
+                                            <Box sx={{ mb: 2 }}>
                                                 <div>
-                                                    {activeStep !== 1 ? <Button
+                                                    <Button
                                                         type={`submit`}
                                                         variant="contained"
                                                         sx={{ mt: 1, mr: 1 }}
                                                     >
-                                                        {index === steps.length - 1 ? 'Finish' : 'Continue'}
-                                                    </Button> : <Button
-                                                        onClick={(e) => addPlayer(e)}
-                                                        variant="contained"
-                                                        sx={{ mt: 1, mr: 1 }}
-                                                    >
-                                                        + Add Player
-                                                    </Button>}
+                                                        {index === steps.length - 1 ? `Finish` : `Continue`}
+                                                    </Button>
                                                     <Button
                                                         disabled={index === 0}
                                                         onClick={handleBack}
@@ -256,7 +251,7 @@ export default function Concentration(props) {
                                                         Back
                                                     </Button>
                                                 </div>
-                                            </Box>}
+                                            </Box>
                                         </StepContent>
                                     </Step>
                                 )

@@ -1,3 +1,7 @@
+article {
+    min-height: calc(94vh - var(--nextra-navbar-height)) !important;
+}
+
 .MuiBox-root {
     width: 100%;
     max-width: 100% !important;
@@ -93,7 +97,6 @@ form {
         align-items: center;
         flex-direction: column;
         justify-content: center;
-        height: 75vh !important;
         font-family: 'Montserrat';
         label {
             opacity: 1;
@@ -106,7 +109,6 @@ form {
             width: 100%;
             font-size: 0.85em;
             text-align: center;
-            // filter: brightness(1);
             font-family: 'Montserrat';
             margin: 5px 0 0 0 !important;
             background: transparent !important;
@@ -118,7 +120,7 @@ form {
             &::placeholder {
                 opacity: 0.35 !important;
                 font-family: 'Montserrat';
-                font-size: 0.65em !important;
+                font-size: 0.77em !important;
             }
         }
         button {
