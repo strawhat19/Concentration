@@ -47,6 +47,7 @@ const steps = [
 export default function Concentration(props) {
 
     const loadedRef = useRef(false);
+    let [theme, setTheme] = useState(`dark`);
     const [loaded, setLoaded] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
     const [formFields, setFormFields] = useState({});
@@ -157,6 +158,14 @@ export default function Concentration(props) {
         }
     }
 
+    // const checkTheme = () => {
+    //     if (document && document.querySelector(`html`).classList.contains(`light`)) {
+    //         return `light`;
+    //     } else {
+    //         return `dark`;
+    //     }
+    // }
+
     useEffect(() => {
 
         if (activeStep == 0) {
@@ -185,7 +194,7 @@ export default function Concentration(props) {
 
     return <>
         <div id={`ConcentrationGame`} title={props.title} style={{width: `100%`, margin: `20px auto`}}>
-            <form className={`ConcentrationGameForm`} id={`ConcentrationGameForm`} onSubmit={(ConcentrationGameFormSubmitEvent) => ConcentrationGameFormSubmit(ConcentrationGameFormSubmitEvent)}>
+            <form className={`ConcentrationGameForm ${theme}`} id={`ConcentrationGameForm`} onSubmit={(ConcentrationGameFormSubmitEvent) => ConcentrationGameFormSubmit(ConcentrationGameFormSubmitEvent)}>
                 <ThemeProvider theme={muiTheme}>
                     <Box sx={{ maxWidth: 400 }}>
                         <Stepper activeStep={activeStep} orientation="vertical">
@@ -226,7 +235,7 @@ export default function Concentration(props) {
                                                         <Typography fontSize={13} key={playerIndex}>{playerIndex + 1}. {player?.name}</Typography>
                                                     )
                                                 })}
-                                                <TextField style={{marginBottom: 15}} fullWidth className={`formField players`} name={`players`} id="standard-basic" label="+ Add Player" variant="standard" />
+                                                <TextField style={{ marginBottom: 15 }} fullWidth className={`formField players`} name={`players`} id="standard-basic" placeholder={`Enter Player Name or Press Enter / Click Continue`} label="+ Add Player" variant="standard" />
                                             </>}
                                             {step.label == `Time Limit` && <>
                                                 <LocalizationProvider dateAdapter={AdapterDayjs}>

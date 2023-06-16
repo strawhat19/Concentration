@@ -110,6 +110,16 @@ html[class~="dark"] {
         border-right: solid 1px rgba(229, 231, 235, 1);
     }
 
+    form {
+        input {
+            color: rgba(17, 24, 39, 1);
+            background: #f2f2f2 !important;
+            &::placeholder {
+                color: rgba(17, 24, 39, 1);
+            }
+        }
+    }
+
     .xl\:nx-block {
         border-left: solid 1px rgba(229, 231, 235, 1);
     }
