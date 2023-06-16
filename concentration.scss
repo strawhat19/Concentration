@@ -12,7 +12,6 @@ article {
 }
 
 .MuiStepConnector-line {
-    color: #bdbdbd !important;
     padding-left: 1em;
     font-size: 0.45em;
 }
@@ -99,21 +98,6 @@ form {
         flex-direction: column;
         justify-content: center;
         font-family: 'Montserrat';
-        &.dark {
-            input {
-                background: transparent !important;
-                border-bottom: 1px solid white !important;
-            }
-        }
-        &.light {
-            input {
-                background: #f2f2f2 !important;
-                border-bottom: 1px solid rgba(17, 24, 39, 1) !important;
-                &::placeholder {
-                    color: rgba(17, 24, 39, 1);
-                }
-            }
-        }
         label {
             opacity: 1;
             font-weight: 500;
@@ -127,6 +111,7 @@ form {
             text-align: center;
             font-family: 'Montserrat';
             margin: 5px 0 0 0 !important;
+            background: transparent !important;
             &:focus-visible {
                 outline: none;
                 box-shadow: none;
@@ -142,6 +127,46 @@ form {
             border-radius: var(--borderRadius);
             font-family: 'Montserrat' !important;
             background: var(--blackGlass) !important;
+        }
+    }
+}
+
+.MuiFormLabel-asterisk {
+    color: var(--gameBlueSoft);
+}
+
+.dark {
+    .MuiStepConnector-line {
+        color: #cfcfcf !important;
+    }
+    form {
+        &.ConcentrationGameForm {
+            input {
+                border-bottom: 1px solid white !important;
+            }
+        }
+    }
+}
+
+.light {
+    .MuiStepConnector-line {
+        color: #8d8d8d !important;
+    }
+    .MuiTypography-root {
+        color: rgba(17, 24, 39, 1);
+    }
+    .MuiStepLabel-label, .MuiStepper-root .MuiTextField-root label, .MuiStepper-root .MuiTextField-root label:not(.Mui-focused) {
+        color: rgba(17, 24, 39, 1) !important;
+    }
+    form {
+        &.ConcentrationGameForm {
+            input {
+                color: rgba(17, 24, 39, 1) !important;
+                border-bottom: 1px solid rgba(17, 24, 39, 1) !important;
+                &::placeholder {
+                    color: rgba(17, 24, 39, 1);
+                }
+            }
         }
     }
 }
